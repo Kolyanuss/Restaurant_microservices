@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace CouponAPI.Migrations
+namespace Services.CouponAPI.Migrations
 {
     /// <inheritdoc />
     public partial class AddCouponToDb : Migration

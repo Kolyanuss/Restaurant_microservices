@@ -1,7 +1,7 @@
 using AutoMapper;
-using CouponAPI;
-using CouponAPI.Data;
 using Microsoft.EntityFrameworkCore;
+using Services.CouponAPI;
+using Services.CouponAPI.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 

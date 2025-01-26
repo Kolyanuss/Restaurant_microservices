@@ -1,11 +1,10 @@
 ﻿using AutoMapper;
-using CouponAPI.Data;
-using CouponAPI.Models;
-using CouponAPI.Models.Dto;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using Services.CouponAPI.Data;
+using Services.CouponAPI.Models;
+using Services.CouponAPI.Models.Dto;
 
-namespace CouponAPI.Controllers
+namespace Services.CouponAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -113,7 +112,7 @@ namespace CouponAPI.Controllers
         {
             try
             {
-                Coupon obj = _db.Coupons.First(u=>u.Id == id);
+                Coupon obj = _db.Coupons.First(u => u.Id == id);
                 _db.Coupons.Remove(obj);
                 _db.SaveChanges();
             }

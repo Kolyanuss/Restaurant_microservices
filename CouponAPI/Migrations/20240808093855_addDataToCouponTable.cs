@@ -4,7 +4,7 @@
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace CouponAPI.Migrations
+namespace Services.CouponAPI.Migrations
 {
     /// <inheritdoc />
     public partial class addDataToCouponTable : Migration

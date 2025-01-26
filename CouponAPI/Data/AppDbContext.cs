@@ -1,11 +1,11 @@
-﻿using CouponAPI.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Services.CouponAPI.Models;
 
-namespace CouponAPI.Data
+namespace Services.CouponAPI.Data
 {
     public class AppDbContext : DbContext
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) 
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
 
@@ -22,7 +22,7 @@ namespace CouponAPI.Data
                 DiscountAmount = 10,
                 MinAmount = 20,
             });
-            
+
             modelBuilder.Entity<Coupon>().HasData(new Coupon
             {
                 Id = 2,
