@@ -8,7 +8,7 @@ using Services.CouponAPI.Data;
 
 #nullable disable
 
-namespace CouponAPI.Migrations
+namespace Services.CouponAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     [Migration("20240808093855_addDataToCouponTable")]
