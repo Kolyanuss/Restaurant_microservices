@@ -20,6 +20,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+/*builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllOrigins",
+        builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+}); // try*/
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -27,9 +33,11 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    //app.UseCors("AllowAllOrigins"); // try
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
+//System.Net.Http.HttpRequestException: 'The SSL connection could not be established, see inner exception.'
 
 app.UseAuthorization();
 

@@ -21,6 +21,7 @@ namespace Web.Service
             try
             {
                 HttpClient client = _httpClientFactory.CreateClient("MangoApi");
+
                 HttpRequestMessage message = new();
                 message.Headers.Add("Accept", "application/json");
                 // token
@@ -64,6 +65,7 @@ namespace Web.Service
                         var apiResponseDto = JsonConvert.DeserializeObject<ResponseDto>(apiContent);
                         return apiResponseDto;
                 }
+
             }
             catch (Exception ex)
             {

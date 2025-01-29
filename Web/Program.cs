@@ -9,6 +9,11 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
 builder.Services.AddHttpClient<ICouponService, CouponService>();
+/*builder.Services.AddHttpClient("MangoApi", client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["ServiceUrls:CouponApi"]);
+});*/ // maybe equivalent
+
 
 StaticDetails.CouponApiBase = builder.Configuration["ServiceUrls:CouponApi"];
 
