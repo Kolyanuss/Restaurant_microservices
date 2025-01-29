@@ -1,5 +1,4 @@
-﻿using Services.CouponAPI.Models.Dto;
-using Web.Models;
+﻿using Web.Models;
 
 namespace Web.Service.IService
 {

@@ -1,5 +1,4 @@
-﻿using Services.CouponAPI.Models.Dto;
-using Web.Models;
+﻿using Web.Models;
 using Web.Service.IService;
 using Web.Utility;
 
@@ -18,7 +17,7 @@ namespace Web.Service
             return await _baseService.SendAsync(new RequestDto()
             {
                 ApiType = StaticDetails.ApiType.GET,
-                Url = StaticDetails.CouponApiBase + "/api/coupon"
+                Url = StaticDetails.CouponApiBase + "/api/Coupon"
             });
         }
 
@@ -27,7 +26,7 @@ namespace Web.Service
             return await _baseService.SendAsync(new RequestDto()
             {
                 ApiType = StaticDetails.ApiType.GET,
-                Url = StaticDetails.CouponApiBase + "/api/coupon/GetByCode/" + couponCode
+                Url = StaticDetails.CouponApiBase + "/api/Coupon/GetByCode/" + couponCode
             });
         }
 
@@ -36,7 +35,7 @@ namespace Web.Service
             return await _baseService.SendAsync(new RequestDto()
             {
                 ApiType = StaticDetails.ApiType.GET,
-                Url = StaticDetails.CouponApiBase + "/api/coupon/" + id
+                Url = StaticDetails.CouponApiBase + "/api/Coupon/" + id
             });
         }
 
@@ -45,7 +44,7 @@ namespace Web.Service
             return await _baseService.SendAsync(new RequestDto()
             {
                 ApiType = StaticDetails.ApiType.POST,
-                Url = StaticDetails.CouponApiBase + "/api/coupon",
+                Url = StaticDetails.CouponApiBase + "/api/Coupon",
                 Data = couponDto
             });
         }
@@ -55,7 +54,7 @@ namespace Web.Service
             return await _baseService.SendAsync(new RequestDto()
             {
                 ApiType = StaticDetails.ApiType.PUT,
-                Url = StaticDetails.CouponApiBase + "/api/coupon",
+                Url = StaticDetails.CouponApiBase + "/api/Coupon",
                 Data = couponDto
             });
         }
@@ -65,7 +64,7 @@ namespace Web.Service
             return await _baseService.SendAsync(new RequestDto()
             {
                 ApiType = StaticDetails.ApiType.DELETE,
-                Url = StaticDetails.CouponApiBase + "/api/coupon/" + id
+                Url = StaticDetails.CouponApiBase + "/api/Coupon/" + id
             });
         }
     }
