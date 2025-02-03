@@ -10,4 +10,16 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Coupon\CouponCreate.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Views\Coupon\CouponCreate.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\Coupon\CouponCreate.cshtml" />
+  </ItemGroup>
+
 </Project>
