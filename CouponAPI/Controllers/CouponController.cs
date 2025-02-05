@@ -6,7 +6,7 @@ using Services.CouponAPI.Models.Dto;
 
 namespace Services.CouponAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/Coupon")]
     [ApiController]
     public class CouponController : ControllerBase
     {
