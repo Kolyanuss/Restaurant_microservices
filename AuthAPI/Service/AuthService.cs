@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Services.AuthAPI.Data;
 using Services.AuthAPI.Models;
 using Services.AuthAPI.Models.Dto;
@@ -11,48 +13,56 @@ namespace Services.AuthAPI.Service
         private readonly AppDbContext _dbContext;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private IMapper _mapper;
 
         public AuthService(AppDbContext dbContext,
-            UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+            UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IMapper mapper)
         {
             _dbContext = dbContext;
             _userManager = userManager;
             _roleManager = roleManager;
+            _mapper = mapper;
         }
 
-        public Task<LoginResponseDto> Login(LoginRequestDto loginRequestDto)
+        public async Task<LoginResponseDto> Login(LoginRequestDto loginRequestDto)
         {
-            throw new NotImplementedException();
+            var user = await _dbContext.applicationUsers.FirstAsync(u => u.UserName == loginRequestDto.UserName);
+            if (user is null)
+            {
+                return new LoginResponseDto();
+            }
+            bool isValid = await _userManager.CheckPasswordAsync(user, loginRequestDto.Password);
+            if (!isValid)
+            {
+                return new LoginResponseDto();
+            }
+            UserDto userDto = _mapper.Map<UserDto>(user);
+
+            // generate token
+
+            LoginResponseDto loginResponseDto = new()
+            {
+                User = userDto,
+                Token = ""
+            };
+            return loginResponseDto;
         }
 
         public async Task<string> Register(RegistrationRequestDto registrationRequestDto)
         {
-            ApplicationUser user = new()
-            {
-                Name = registrationRequestDto.Name,
-                UserName = registrationRequestDto.Email,
-                Email = registrationRequestDto.Email,
-                NormalizedEmail = registrationRequestDto.Email.ToUpper(),
-                PhoneNumber = registrationRequestDto.PhoneNumber
-            };
+            ApplicationUser user = _mapper.Map<ApplicationUser>(registrationRequestDto);
             try
             {
                 var result = await _userManager.CreateAsync(user, registrationRequestDto.Password);
-                if (result.Succeeded)
+                if (!result.Succeeded)
                 {
-                    var userToReturn = _dbContext.applicationUsers.First(u => u.UserName == registrationRequestDto.Email);
-                    UserDto userDto = new()
-                    {
-                        Email = userToReturn.Email,
-                        ID = userToReturn.Id,
-                        Name = userToReturn.Name,
-                        PhoneNumber = userToReturn.PhoneNumber
-                    };
-                    return "";
+                    return result.Errors.FirstOrDefault().Description;
                 }
                 else
                 {
-                    return result.Errors.FirstOrDefault().Description;
+                    //var userToReturn = _dbContext.applicationUsers.First(u => u.UserName == registrationRequestDto.Email);
+                    //UserDto userDto = _mapper.Map<UserDto>(userToReturn);
+                    return "";
                 }
 
             }

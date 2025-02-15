@@ -1,5 +1,7 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Services.AuthAPI;
 using Services.AuthAPI.Data;
 using Services.AuthAPI.Models;
 using Services.AuthAPI.Service;
@@ -22,6 +24,11 @@ builder.Services.AddControllers();
 
 // services
 builder.Services.AddScoped<IAuthService, AuthService>();
+
+// AutoMapper
+IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();
+builder.Services.AddSingleton(mapper);
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 // other
 builder.Services.AddEndpointsApiExplorer();
