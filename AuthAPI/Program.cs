@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Services.AuthAPI.Data;
 using Services.AuthAPI.Models;
+using Services.AuthAPI.Service;
+using Services.AuthAPI.Service.IService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +19,11 @@ builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("ApiSett
 
 // controllers
 builder.Services.AddControllers();
+
+// services
+builder.Services.AddScoped<IAuthService, AuthService>();
+
+// other
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
