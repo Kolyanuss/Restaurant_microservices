@@ -1,4 +1,5 @@
-﻿using Services.AuthAPI.Models.Dto;
+﻿using Services.AuthAPI.Models;
+using Services.AuthAPI.Models.Dto;
 
 namespace Services.AuthAPI.Service.IService
 {
@@ -6,5 +7,6 @@ namespace Services.AuthAPI.Service.IService
     {
         Task<string> Register(RegistrationRequestDto registrationRequestDto);
         Task<LoginResponseDto> Login(LoginRequestDto loginRequestDto);
+        string GenerateToken(ApplicationUser applicationUser);
     }
 }
