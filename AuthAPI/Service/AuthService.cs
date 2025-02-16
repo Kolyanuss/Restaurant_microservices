@@ -33,7 +33,7 @@ namespace Services.AuthAPI.Service
 
         public async Task<LoginResponseDto> Login(LoginRequestDto loginRequestDto)
         {
-            var user = await _dbContext.applicationUsers.FirstAsync(u => u.UserName == loginRequestDto.UserName);
+            var user = await _dbContext.applicationUsers.FirstOrDefaultAsync(u => u.UserName == loginRequestDto.UserName);
             if (user is null)
             {
                 return new LoginResponseDto();
@@ -98,6 +98,22 @@ namespace Services.AuthAPI.Service
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
+        }
+
+        public async Task<bool> AssignRole(string email, string roleName)
+        {
+            var user = await _dbContext.applicationUsers.FirstOrDefaultAsync(u => u.Email == email);
+            if (user == null)
+            {
+                return false;
+            }
+
+            if (!await _roleManager.RoleExistsAsync(roleName))
+            {
+                await _roleManager.CreateAsync(new IdentityRole(roleName));
+            }
+            await _userManager.AddToRoleAsync(user, roleName);
+            return true;
         }
     }
 }
