@@ -1,4 +1,5 @@
 ﻿using Web.Models;
+using ModelLibrary.Dto;
 
 namespace Web.Service.IService
 {

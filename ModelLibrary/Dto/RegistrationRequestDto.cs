@@ -1,4 +1,4 @@
-﻿namespace Services.AuthAPI.Models.Dto
+﻿namespace ModelLibrary.Dto
 {
     public class RegistrationRequestDto
     {

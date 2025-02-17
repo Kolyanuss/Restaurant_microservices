@@ -1,5 +1,5 @@
-﻿using Services.AuthAPI.Models;
-using Services.AuthAPI.Models.Dto;
+﻿using ModelLibrary.Dto;
+using Services.AuthAPI.Models;
 
 namespace Services.AuthAPI.Service.IService
 {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Web.Service.IService;
-using Web.Models;
+using ModelLibrary.Dto;
 using Newtonsoft.Json;
+using Web.Service.IService;
 
 namespace Web.Controllers
 {

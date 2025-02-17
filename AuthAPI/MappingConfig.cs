@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
+using ModelLibrary.Dto;
 using Services.AuthAPI.Models;
-using Services.AuthAPI.Models.Dto;
 
 namespace Services.AuthAPI
 {

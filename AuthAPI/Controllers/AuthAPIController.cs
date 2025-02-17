@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Services.AuthAPI.Models.Dto;
+using ModelLibrary.Dto;
 using Services.AuthAPI.Service.IService;
 
 namespace Services.AuthAPI.Controllers
