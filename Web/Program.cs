@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Web.Service;
 using Web.Service.IService;
 using Web.Utility;
@@ -8,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
-builder.Services.AddHttpClient<ICouponService, CouponService>();
+//builder.Services.AddHttpClient<ICouponService, CouponService>();
 /*builder.Services.AddHttpClient("MangoApi", client =>
 {
     client.BaseAddress = new Uri(builder.Configuration["ServiceUrls:CouponApi"]);
@@ -16,9 +17,20 @@ builder.Services.AddHttpClient<ICouponService, CouponService>();
 
 
 StaticDetails.CouponApiBase = builder.Configuration["ServiceUrls:CouponApi"];
+StaticDetails.AuthApiBase = builder.Configuration["ServiceUrls:AuthApi"];
 
 builder.Services.AddScoped<IBaseService, BaseService>();
 builder.Services.AddScoped<ICouponService, CouponService>();
+builder.Services.AddScoped<ITokenProvider, TokenProvider>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.ExpireTimeSpan = TimeSpan.FromHours(10);
+        options.LoginPath = "/auth/login";
+        options.AccessDeniedPath = "/auth/accessDenied";
+    });
 
 var app = builder.Build();
 
@@ -34,7 +46,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

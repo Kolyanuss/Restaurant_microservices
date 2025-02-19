@@ -1,4 +1,4 @@
-﻿namespace Web.Models
+﻿namespace ModelLibrary.Dto
 {
     public class CouponDto
     {
