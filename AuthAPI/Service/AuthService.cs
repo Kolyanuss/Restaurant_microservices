@@ -33,7 +33,7 @@ namespace Services.AuthAPI.Service
 
         public async Task<LoginResponseDto> Login(LoginRequestDto loginRequestDto)
         {
-            var user = await _dbContext.applicationUsers.FirstOrDefaultAsync(u => u.UserName == loginRequestDto.UserName);
+            ApplicationUser? user = await _dbContext.applicationUsers.FirstOrDefaultAsync(u => u.UserName == loginRequestDto.UserName);
             if (user is null)
             {
                 return new LoginResponseDto();
@@ -43,11 +43,11 @@ namespace Services.AuthAPI.Service
             {
                 return new LoginResponseDto();
             }
-
+            var roles = await _userManager.GetRolesAsync(user);
             LoginResponseDto loginResponseDto = new()
             {
                 User = _mapper.Map<UserDto>(user),
-                Token = GenerateToken(user)
+                Token = GenerateToken(user, roles)
             };
             return loginResponseDto;
         }
@@ -75,7 +75,7 @@ namespace Services.AuthAPI.Service
             return "Error Encounter";
         }
 
-        public string GenerateToken(ApplicationUser applicationUser)
+        public string GenerateToken(ApplicationUser applicationUser, IEnumerable<string> roles)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_jwtOptions.Secret);
@@ -86,6 +86,8 @@ namespace Services.AuthAPI.Service
                 new Claim(JwtRegisteredClaimNames.Sub, applicationUser.Id),
                 new Claim(JwtRegisteredClaimNames.Email, applicationUser.Email)
             };
+
+            claimList.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
