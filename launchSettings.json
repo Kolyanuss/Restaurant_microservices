@@ -1,0 +1,25 @@
+{
+  "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "serviceActions": {
+        "couponapi": "StartDebugging",
+        "authapi": "StartDebugging",
+        "web": "StartDebugging"
+      }
+    },
+    "Docker Compose 2": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "composeLaunchAction": "LaunchBrowser",
+      "composeLaunchServiceName": "web",
+      "composeLaunchUrl": "{Scheme}://localhost:{ServicePort}",
+      "serviceActions": {
+        "authapi": "DoNotStart",
+        "couponapi": "DoNotStart",
+        "web": "StartDebugging"
+      }
+    }
+  }
+}

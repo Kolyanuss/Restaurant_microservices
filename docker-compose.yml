@@ -1,0 +1,40 @@
+version: '3.4'
+
+services:
+  couponapi:
+    image: ${DOCKER_REGISTRY-}couponapi
+    # depends_on:
+    #     sql:
+    #       condition: service_healthy
+    healthcheck:
+        test: curl --fail http://couponapi:8080/ || exit 1
+        interval: 20s
+        timeout: 20s
+        retries: 5
+    build:
+      context: .
+      dockerfile: CouponAPI/Dockerfile
+
+  authapi:
+    image: ${DOCKER_REGISTRY-}authapi
+    healthcheck:
+        test: curl --fail http://authapi:8080/ || exit 1
+        interval: 20s
+        timeout: 20s
+        retries: 5
+    build:
+      context: .
+      dockerfile: AuthAPI/Dockerfile
+
+
+  web:
+    image: ${DOCKER_REGISTRY-}web
+    # depends_on:
+    #     couponapi:
+    #       condition: service_healthy
+    #     authapi:
+    #       condition: service_healthy
+    build:
+      context: .
+      dockerfile: Web/Dockerfile
+
