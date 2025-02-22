@@ -17,10 +17,12 @@
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Views\Coupon\CouponCreate.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Product\ProductCreate.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="Views\Coupon\CouponCreate.cshtml" />
+    <None Include="Views\Product\ProductCreate.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,6 +34,10 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Product\ProductCreate.cshtml" />
   </ItemGroup>
 
 </Project>
