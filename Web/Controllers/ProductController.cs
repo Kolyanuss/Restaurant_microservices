@@ -56,22 +56,14 @@ namespace Web.Controllers
 
 		public async Task<IActionResult> ProductDelete(int id)
 		{
-			ResponseDto? response = await _service.GetProductByIdAsync(id);
-			if (response == null || !response.IsSuccess)
+			ResponseDto? responseDelete = await _service.DeleteProductAsync(id);
+			if (responseDelete == null || !responseDelete.IsSuccess)
 			{
-				TempData["error"] = response?.Message;
+				TempData["error"] = responseDelete?.Message;
 				return RedirectToAction(nameof(ProductIndex));
 			}
 			
-			ProductDto? dto = JsonConvert.DeserializeObject<ProductDto>(Convert.ToString(response.Result));
-			ResponseDto? responseCreate = await _service.CreateProductAsync(dto);
-			if (responseCreate == null || !responseCreate.IsSuccess)
-			{
-				TempData["error"] = responseCreate?.Message;
-				return RedirectToAction(nameof(ProductIndex));
-			}
-			
-			TempData["success"] = "Product created successfully!";
+			TempData["success"] = "Product deleted successfully!";
 			return RedirectToAction(nameof(ProductIndex));
 		}
 	}
