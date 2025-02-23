@@ -83,8 +83,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-//app.UseHttpsRedirection();
-//System.Net.Http.HttpRequestException: 'The SSL connection could not be established, see inner exception.'
+app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
