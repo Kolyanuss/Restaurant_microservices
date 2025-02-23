@@ -1,19 +1,35 @@
 version: '3.4'
 
 services:
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: mssql_container
+    environment:
+      SA_PASSWORD: "YourStrong!Passw0rd"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    networks:
+      - backend
+
   couponapi:
     image: ${DOCKER_REGISTRY-}couponapi
-    # depends_on:
-    #     sql:
-    #       condition: service_healthy
+    build:
+      context: .
+      dockerfile: CouponAPI/Dockerfile
+    depends_on:
+        - mssql
     healthcheck:
         test: curl --fail http://couponapi:8080/ || exit 1
         interval: 20s
         timeout: 20s
         retries: 5
-    build:
-      context: .
-      dockerfile: CouponAPI/Dockerfile
+    environment:
+      ConnectionStrings__DefaultConnection: "Server=mssql_container;Database=Restaurant_Coupon;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;"
+    ports:
+      - "8080:8080"
+    networks:
+      - backend
 
   authapi:
     image: ${DOCKER_REGISTRY-}authapi
@@ -25,16 +41,26 @@ services:
     build:
       context: .
       dockerfile: AuthAPI/Dockerfile
-
+    depends_on:
+        - mssql
+    environment:
+      ConnectionStrings__DefaultConnection: "Server=mssql_container;Database=Restaurant_Auth;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;"
+    ports:
+      - "8081:8081"
+    networks:
+      - backend
 
   web:
     image: ${DOCKER_REGISTRY-}web
-    # depends_on:
-    #     couponapi:
-    #       condition: service_healthy
-    #     authapi:
-    #       condition: service_healthy
+    depends_on:
+        couponapi:
+          condition: service_healthy
+        authapi:
+          condition: service_healthy
     build:
       context: .
       dockerfile: Web/Dockerfile
 
+networks:
+  backend:
+    driver: bridge
