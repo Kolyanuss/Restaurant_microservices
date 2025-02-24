@@ -9,6 +9,8 @@ services:
       ACCEPT_EULA: "Y"
     ports:
       - "1433:1433"
+    volumes:
+      - sql_data:/var/opt/mssql
     networks:
       - backend
 
@@ -87,3 +89,6 @@ services:
 networks:
   backend:
     driver: bridge
+
+volumes:
+  sql_data:
