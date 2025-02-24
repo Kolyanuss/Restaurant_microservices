@@ -1,0 +1,94 @@
+version: '3.4'
+
+services:
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: mssql_container
+    environment:
+      SA_PASSWORD: "YourStrong!Passw0rd"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sql_data:/var/opt/mssql
+    networks:
+      - backend
+
+  couponapi:
+    image: ${DOCKER_REGISTRY-}couponapi
+    build:
+      context: .
+      dockerfile: CouponAPI/Dockerfile
+    depends_on:
+        - mssql
+    healthcheck:
+        test: curl --fail http://couponapi:8080/health || exit 1
+        interval: 20s
+        timeout: 20s
+        retries: 5
+    environment:
+      ConnectionStrings__DefaultConnection: "Server=mssql_container;Database=Restaurant_Coupon;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;"
+    networks:
+      - backend
+
+  productapi:
+    image: ${DOCKER_REGISTRY-}productapi
+    build:
+      context: .
+      dockerfile: ProductAPI/Dockerfile
+    depends_on:
+      - mssql
+    healthcheck:
+        test: curl --fail http://productapi:8080/health || exit 1
+        interval: 20s
+        timeout: 20s
+        retries: 5
+    environment:
+      ConnectionStrings__DefaultConnection: "Server=mssql_container;Database=Restaurant_Product;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;"
+    networks:
+      - backend
+
+  authapi:
+    image: ${DOCKER_REGISTRY-}authapi
+    healthcheck:
+        test: curl --fail http://authapi:8080/health || exit 1
+        interval: 20s
+        timeout: 20s
+        retries: 5
+    build:
+      context: .
+      dockerfile: AuthAPI/Dockerfile
+    depends_on:
+        - mssql
+    environment:
+      ConnectionStrings__DefaultConnection: "Server=mssql_container;Database=Restaurant_Auth;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;"
+    networks:
+      - backend
+
+  web:
+    image: ${DOCKER_REGISTRY-}web
+    depends_on:
+        - couponapi
+          # condition: service_healthy
+        - authapi
+          # condition: service_healthy
+        - productapi
+          # condition: service_healthy
+    build:
+      context: .
+      dockerfile: Web/Dockerfile
+    environment:
+      ServiceUrls__AuthApi: "http://authapi:8080"
+      ServiceUrls__CouponApi: "http://couponapi:8080"
+      ServiceUrls__ProductApi: "http://productapi:8080"
+    ports:
+      - "7010:8080"
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
+
+volumes:
+  sql_data:

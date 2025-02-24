@@ -1,6 +1,5 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -23,6 +22,7 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 // controllers
 builder.Services.AddControllers();
+builder.Services.AddHealthChecks();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(opt =>
 {
@@ -84,14 +84,13 @@ if (app.Environment.IsDevelopment())
 }
 
 //app.UseHttpsRedirection();
-//System.Net.Http.HttpRequestException: 'The SSL connection could not be established, see inner exception.'
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
 
 ApplyMigration();
-
+app.MapHealthChecks("/health");
 app.Run();
 
 void ApplyMigration()

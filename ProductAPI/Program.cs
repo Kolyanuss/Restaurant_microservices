@@ -22,6 +22,7 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 // controllers
 builder.Services.AddControllers();
+builder.Services.AddHealthChecks();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(opt =>
 {
@@ -89,7 +90,7 @@ app.UseAuthorization();
 app.MapControllers();
 
 ApplyMigration();
-
+app.MapHealthChecks("/health");
 app.Run();
 
 void ApplyMigration()

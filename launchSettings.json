@@ -1,0 +1,32 @@
+{
+  "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "composeLaunchAction": "LaunchBrowser",
+      "composeLaunchServiceName": "web",
+      "composeLaunchUrl": "{Scheme}://localhost:{ServicePort}",
+      "serviceActions": {
+        "couponapi": "StartWithoutDebugging",
+        "authapi": "StartWithoutDebugging",
+        "web": "StartDebugging",
+        "mssql": "StartWithoutDebugging",
+        "productapi": "StartDebugging"
+      }
+    },
+    "Docker Compose 2": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "composeLaunchAction": "LaunchBrowser",
+      "composeLaunchServiceName": "web",
+      "composeLaunchUrl": "{Scheme}://localhost:{ServicePort}",
+      "serviceActions": {
+        "authapi": "DoNotStart",
+        "couponapi": "DoNotStart",
+        "web": "StartDebugging",
+        "mssql": "DoNotStart",
+        "productapi": "StartDebugging"
+      }
+    }
+  }
+}
