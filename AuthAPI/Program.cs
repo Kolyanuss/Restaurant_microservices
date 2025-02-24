@@ -21,6 +21,7 @@ builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("ApiSett
 
 // controllers
 builder.Services.AddControllers();
+builder.Services.AddHealthChecks();
 
 // services
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -43,14 +44,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
 
 ApplyMigration();
-
+app.MapHealthChecks("/health");
 app.Run();
 
 void ApplyMigration()
