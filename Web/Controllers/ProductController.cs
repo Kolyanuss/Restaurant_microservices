@@ -8,17 +8,17 @@ namespace Web.Controllers
 {
 	public class ProductController : Controller
 	{
-		private readonly IProductService _service;
+		private readonly IProductService _productService;
 
 		public ProductController(IProductService service)
 		{
-			_service = service;
+			_productService = service;
 		}
 
 		public async Task<IActionResult> ProductIndex()
 		{
 			List<ProductDto>? list = new();
-			ResponseDto? response = await _service.GetAllProductsAsync();
+			ResponseDto? response = await _productService.GetAllProductsAsync();
 			if (response != null && response.IsSuccess)
 			{
 				list = JsonConvert.DeserializeObject<List<ProductDto>>(Convert.ToString(response.Result));
@@ -42,7 +42,7 @@ namespace Web.Controllers
 			{
 				try
 				{
-					ResponseDto? response = await _service.CreateProductAsync(dto);
+					ResponseDto? response = await _productService.CreateProductAsync(dto);
 
 					if (response == null || !response.IsSuccess)
 					{
@@ -51,7 +51,7 @@ namespace Web.Controllers
 					TempData["success"] = "Product created successfully!";
 					return RedirectToAction(nameof(ProductIndex));
 				}
-				catch (Exception ex)
+				catch (Exception)
 				{
 					TempData["error"] = "An internal error occurred. Please try again later.";
 				}
@@ -61,7 +61,7 @@ namespace Web.Controllers
 
         public async Task<IActionResult> ProductEdit(int id)
 		{
-			ResponseDto response = await _service.GetProductByIdAsync(id);
+			ResponseDto response = await _productService.GetProductByIdAsync(id);
             if (response != null && response.IsSuccess)
             {
 				ProductDto? model = JsonConvert.DeserializeObject<ProductDto>(Convert.ToString(response.Result));
@@ -76,7 +76,7 @@ namespace Web.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				ResponseDto? response = await _service.UpdateProductAsync(dto);
+				ResponseDto? response = await _productService.UpdateProductAsync(dto);
 				if (response != null && response.IsSuccess)
 				{
 					TempData["success"] = "Product updated successfully!";
@@ -89,7 +89,7 @@ namespace Web.Controllers
 
 		public async Task<IActionResult> ProductDelete(int id)
 		{
-			ResponseDto? responseDelete = await _service.DeleteProductAsync(id);
+			ResponseDto? responseDelete = await _productService.DeleteProductAsync(id);
 			if (responseDelete == null || !responseDelete.IsSuccess)
 			{
 				TempData["error"] = responseDelete?.Message;
