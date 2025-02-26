@@ -30,7 +30,7 @@ namespace Services.ProductAPI.Controllers
 			try
 			{
 				var objList = _db.Products.ToList();
-				_response.Result = _mapper.Map<IEnumerable<ProductDto>>(objList); ;
+				_response.Result = _mapper.Map<IEnumerable<ProductDto>>(objList);
 			}
 			catch (Exception e)
 			{
@@ -47,7 +47,7 @@ namespace Services.ProductAPI.Controllers
 			try
 			{
 				var obj = _db.Products.FirstOrDefault(u => u.ProductId == id);
-				_response.Result = _mapper.Map<ProductDto>(obj); ;
+				_response.Result = _mapper.Map<ProductDto>(obj);
 			}
 			catch (Exception e)
 			{
