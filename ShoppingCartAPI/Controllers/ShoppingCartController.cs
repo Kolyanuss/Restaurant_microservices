@@ -23,7 +23,7 @@ namespace Services.ShoppingCartAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ResponseDto> Get(string userId)
+        public async Task<ResponseDto> Get([FromBody]string userId)
         {
             try
             {
@@ -79,19 +79,70 @@ namespace Services.ShoppingCartAPI.Controllers
                     return _response;
                 }
 
-                //if (CartHeader.CouponCode != newCartHeader.CouponCode)
-                //{
-                //    CartHeader.CouponCode = newCartHeader.CouponCode;
-                //    _db.cartHeaders.Update(CartHeader);
-                //    await _db.SaveChangesAsync();
-                //}
-
                 foreach (var item in newCartDetails)
                 {
                     item.CartHeader = CartHeader;
                     item.CartHeaderId = CartHeader.CartHeaderId;
                     _db.CartDetails.Update(item);
                 }
+                await _db.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                _response.IsSuccess = false;
+                _response.Message = e.Message;
+            }
+            return _response;
+        }
+
+        [HttpPut]
+        public async Task<ResponseDto> UpsertCouponCode([FromBody]string userId, string couponCode)
+        {
+            try
+            {
+                var CartHeader = await _db.cartHeaders.FirstOrDefaultAsync(u => u.UserId == userId);
+                if (CartHeader is null) { throw new Exception("No cart found for this user."); }
+                if (CartHeader.CouponCode != couponCode)
+                {
+                    CartHeader.CouponCode = couponCode;
+                    _db.cartHeaders.Update(CartHeader);
+                    await _db.SaveChangesAsync();
+                }
+            }
+            catch (Exception e)
+            {
+                _response.IsSuccess = false;
+                _response.Message = e.Message;
+            }
+            return _response;
+        }
+
+        [HttpDelete]
+        [Route("deleteall/")]
+        public async Task<ResponseDto> DeleteAllCart([FromBody]string userId)
+        {
+            try
+            {
+                var cartHeader = await _db.cartHeaders.FirstAsync(u => u.UserId == userId);
+                _db.cartHeaders.Remove(cartHeader);
+                await _db.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                _response.IsSuccess = false;
+                _response.Message = e.Message;
+            }
+            return _response;
+        }
+
+        [HttpDelete]
+        //[Route("{detailId:int}")]
+        public async Task<ResponseDto> DeleteCartDetail([FromBody] int detailId)
+        {
+            try
+            {
+                var cartDetail = await _db.CartDetails.FirstAsync(u => u.CartDetailsId == detailId);
+                _db.CartDetails.Remove(cartDetail);
                 await _db.SaveChangesAsync();
             }
             catch (Exception e)
