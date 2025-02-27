@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ModelLibrary.Dto;
@@ -9,6 +10,7 @@ namespace Services.ShoppingCartAPI.Controllers
 {
     [Route("api/cart")]
     [ApiController]
+    [Authorize]
     public class ShoppingCartController : ControllerBase
     {
         private readonly AppDbContext _db;
@@ -28,7 +30,12 @@ namespace Services.ShoppingCartAPI.Controllers
             try
             {
                 CartHeader? cartHeader = await _db.cartHeaders.FirstOrDefaultAsync(u=>u.UserId == userId);
-                if (cartHeader is null) { throw new Exception("Cart not found"); }
+                if (cartHeader is null)
+                {
+                    cartHeader = new CartHeader() { UserId = userId };
+                    await _db.cartHeaders.AddAsync(cartHeader);
+                    await _db.SaveChangesAsync();
+                }
 
                 List<CartDetails>? cartDetails = await _db.CartDetails
                     .Where(u => u.CartHeaderId == cartHeader.CartHeaderId).ToListAsync();

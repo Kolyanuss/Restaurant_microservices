@@ -14,7 +14,7 @@ namespace Web.Service
             _baseService = baseService;
         }
 
-        public async Task<ResponseDto?> GetCart(string userId)
+        public async Task<ResponseDto?> GetCartAsync(string userId)
         {
             return await _baseService.SendAsync(new RequestDto()
             {
@@ -24,7 +24,7 @@ namespace Web.Service
             });
         }
 
-        public async Task<ResponseDto?> UpsetrCart(CartDto cartDto)
+        public async Task<ResponseDto?> UpsetrCartAsync(CartDto cartDto)
         {
             return await _baseService.SendAsync(new RequestDto()
             {
@@ -34,7 +34,7 @@ namespace Web.Service
             });
         }
 
-        public async Task<ResponseDto?> UpsetrCoupon(string userId, string couponCode)
+        public async Task<ResponseDto?> UpsetrCouponAsync(string userId, string couponCode)
         {
             return await _baseService.SendAsync(new RequestDto()
             {
@@ -44,7 +44,7 @@ namespace Web.Service
             });
         }
 
-        public async Task<ResponseDto?> DeleteCart(string userId)
+        public async Task<ResponseDto?> DeleteCartAsync(string userId)
         {
             return await _baseService.SendAsync(new RequestDto()
             {
@@ -54,7 +54,7 @@ namespace Web.Service
             });
         }
 
-        public async Task<ResponseDto?> DeleteDetail(int detailId)
+        public async Task<ResponseDto?> DeleteDetailAsync(int detailId)
         {
             return await _baseService.SendAsync(new RequestDto()
             {
