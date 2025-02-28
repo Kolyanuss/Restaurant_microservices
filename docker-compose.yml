@@ -65,15 +65,30 @@ services:
     networks:
       - backend
 
+  shoppingcartapi:
+    image: ${DOCKER_REGISTRY-}shoppingcartapi
+    build:
+      context: .
+      dockerfile: ShoppingCartAPI/Dockerfile
+    depends_on:
+      - mssql
+    healthcheck:
+        test: curl --fail http://shoppingcartapi:8080/health || exit 1
+        interval: 20s
+        timeout: 20s
+        retries: 5
+    environment:
+      ConnectionStrings__DefaultConnection: "Server=mssql_container;Database=Restaurant_ShoppingCart;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;"
+    networks:
+      - backend
+
   web:
     image: ${DOCKER_REGISTRY-}web
     depends_on:
         - couponapi
-          # condition: service_healthy
         - authapi
-          # condition: service_healthy
         - productapi
-          # condition: service_healthy
+        - shoppingcartapi
     build:
       context: .
       dockerfile: Web/Dockerfile
@@ -81,10 +96,12 @@ services:
       ServiceUrls__AuthApi: "http://authapi:8080"
       ServiceUrls__CouponApi: "http://couponapi:8080"
       ServiceUrls__ProductApi: "http://productapi:8080"
+      ServiceUrls__ShoppingCartApi: "http://shoppingcartapi:8080"
     ports:
       - "7010:8080"
     networks:
       - backend
+
 
 networks:
   backend:
@@ -92,3 +109,4 @@ networks:
 
 volumes:
   sql_data:
+
