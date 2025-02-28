@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using ModelLibrary.Dto;
 using Services.CouponAPI.Data;
 using Services.CouponAPI.Models;
-using ModelLibrary.Dto;
-using Microsoft.AspNetCore.Authorization;
 
 namespace Services.CouponAPI.Controllers
 {
@@ -24,11 +25,11 @@ namespace Services.CouponAPI.Controllers
         }
 
         [HttpGet]
-        public ResponseDto Get()
+        public async Task<ResponseDto> Get()
         {
             try
             {
-                IEnumerable<Coupon> objList = _db.Coupons.ToList();
+                IEnumerable<Coupon> objList = await _db.Coupons.ToListAsync();
                 _response.Result = _mapper.Map<IEnumerable<CouponDto>>(objList);
             }
             catch (Exception ex)
@@ -41,11 +42,11 @@ namespace Services.CouponAPI.Controllers
 
         [HttpGet]
         [Route("{id:int}")]
-        public ResponseDto Get(int id)
+        public async Task<ResponseDto> Get(int id)
         {
             try
             {
-                Coupon obj = _db.Coupons.First(u => u.Id == id);
+                Coupon obj = await _db.Coupons.FirstAsync(u => u.Id == id);
                 _response.Result = _mapper.Map<CouponDto>(obj);
             }
             catch (Exception ex)
@@ -58,11 +59,11 @@ namespace Services.CouponAPI.Controllers
 
         [HttpGet]
         [Route("GetByCode/{code}")]
-        public ResponseDto Get(string code)
+        public async Task<ResponseDto> Get(string code)
         {
             try
             {
-                Coupon obj = _db.Coupons.First(u => u.CouponCode.ToLower() == code.ToLower());
+                Coupon obj = await _db.Coupons.FirstAsync(u => u.CouponCode.ToLower() == code.ToLower());
                 _response.Result = _mapper.Map<CouponDto>(obj);
             }
             catch (Exception ex)
@@ -75,13 +76,13 @@ namespace Services.CouponAPI.Controllers
 
         [HttpPost]
         [Authorize(Roles = "ADMIN")]
-        public ResponseDto Post([FromBody] CouponDto couponDto)
+        public async Task<ResponseDto> Post([FromBody] CouponDto couponDto)
         {
             try
             {
                 Coupon obj = _mapper.Map<Coupon>(couponDto);
-                _db.Coupons.Add(obj);
-                _db.SaveChanges();
+                await _db.Coupons.AddAsync(obj);
+                await _db.SaveChangesAsync();
             }
             catch (Exception ex)
             {
@@ -93,13 +94,13 @@ namespace Services.CouponAPI.Controllers
 
         [HttpPut]
         [Authorize(Roles = "ADMIN")]
-        public ResponseDto Put([FromBody] CouponDto couponDto)
+        public async Task<ResponseDto> Put([FromBody] CouponDto couponDto)
         {
             try
             {
                 Coupon obj = _mapper.Map<Coupon>(couponDto);
                 _db.Coupons.Update(obj);
-                _db.SaveChanges();
+                await _db.SaveChangesAsync();
 
                 _response.Result = _mapper.Map<CouponDto>(obj);
             }
@@ -114,13 +115,13 @@ namespace Services.CouponAPI.Controllers
         [HttpDelete]
         [Route("{id:int}")]
         [Authorize(Roles = "ADMIN")]
-        public ResponseDto Delete(int id)
+        public async Task<ResponseDto> Delete(int id)
         {
             try
             {
-                Coupon obj = _db.Coupons.First(u => u.Id == id);
+                Coupon obj = await _db.Coupons.FirstAsync(u => u.Id == id);
                 _db.Coupons.Remove(obj);
-                _db.SaveChanges();
+                await _db.SaveChangesAsync();
             }
             catch (Exception ex)
             {
