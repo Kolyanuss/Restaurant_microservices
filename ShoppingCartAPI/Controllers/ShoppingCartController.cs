@@ -111,8 +111,7 @@ namespace Services.ShoppingCartAPI.Controllers
         {
             try
             {
-                var CartHeader = await _db.cartHeaders.FirstOrDefaultAsync(u => u.UserId == cartHeader.UserId);
-                if (CartHeader is null) { throw new Exception("No cart found for this user."); }
+                var CartHeader = await _db.cartHeaders.FirstAsync(u => u.UserId == cartHeader.UserId);
                 if (CartHeader.CouponCode != cartHeader.CouponCode)
                 {
                     CartHeader.CouponCode = cartHeader.CouponCode;

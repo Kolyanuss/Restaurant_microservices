@@ -1,5 +1,4 @@
-﻿using ModelLibrary.Dto;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Services.ShoppingCartAPI.Models

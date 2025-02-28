@@ -5,13 +5,11 @@ using Microsoft.EntityFrameworkCore;
 using ModelLibrary.Dto;
 using Services.ProductAPI.Data;
 using Services.ProductAPI.Models;
-using System.Threading.Tasks;
 
 namespace Services.ProductAPI.Controllers
 {
 	[Route("api/product")]
 	[ApiController]
-	//[Authorize]
 	public class ProductController : ControllerBase
 	{
 		private readonly AppDbContext _db;
