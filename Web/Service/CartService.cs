@@ -24,7 +24,7 @@ namespace Web.Service
             });
         }
 
-        public async Task<ResponseDto?> UpsetrCartAsync(CartDto cartDto)
+        public async Task<ResponseDto?> UpsetrCartAsync(CartUpsertDto cartDto)
         {
             return await _baseService.SendAsync(new RequestDto()
             {

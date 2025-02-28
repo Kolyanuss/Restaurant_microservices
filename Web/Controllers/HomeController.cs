@@ -62,26 +62,21 @@ namespace Web.Controllers
                 var userId = User.Claims.Where(u => u.Type == JwtRegisteredClaimNames.Sub)?.FirstOrDefault()?.Value;
                 if (string.IsNullOrEmpty(userId))
                 {
-                    TempData["error"] = "Error: the user cannot be found";
-                    return RedirectToAction(nameof(Index));
+                    throw new Exception("Error: the user cannot be found");
                 }
-                var cartHeader = new CartHeaderDto
+                var cartUpsertDto = new CartUpsertDto
                 {
-                    UserId = userId
-                };
-                var cartDetail = new CartDetailsDto
-                {
+                    UserId = userId,
                     ProductId = productDto.ProductId,
-                    //Product = productDto,
                     Count = productDto.Count
                 };
-                var responce = await _cartService.UpsetrCartAsync(new CartDto
+                var responce = await _cartService.UpsetrCartAsync(cartUpsertDto);
+                if (responce == null || !responce.IsSuccess)
                 {
-                    CartHeader = cartHeader,
-                    CartDetails = [cartDetail]
-                });
+                    throw new Exception("Server Error: Cannot update a shopping cart. " + responce?.Message);
+                }
                 TempData["success"] = "The product has been added to your shopping cart.";
-                //return RedirectToAction(nameof(CartController.CartIndex), nameof(CartController).Replace("Controller", ""));
+                return RedirectToAction(nameof(CartController.CartIndex), nameof(CartController).Replace("Controller", ""));
             }
             catch (Exception e)
             {

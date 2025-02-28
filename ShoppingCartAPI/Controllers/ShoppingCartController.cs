@@ -25,11 +25,11 @@ namespace Services.ShoppingCartAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ResponseDto> Get([FromBody]string userId)
+        public async Task<ResponseDto> Get([FromBody] string userId)
         {
             try
             {
-                CartHeader? cartHeader = await _db.cartHeaders.FirstOrDefaultAsync(u=>u.UserId == userId);
+                CartHeader? cartHeader = await _db.cartHeaders.FirstOrDefaultAsync(u => u.UserId == userId);
                 if (cartHeader is null)
                 {
                     cartHeader = new CartHeader() { UserId = userId };
@@ -56,42 +56,46 @@ namespace Services.ShoppingCartAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ResponseDto> CartUpsert(CartDto cartDto)
+        public async Task<ResponseDto> CartUpsert(CartUpsertDto cartUpsertDto)
         {
             try
             {
-                if (cartDto?.CartDetails is null || cartDto.CartDetails.Count() < 1)
-                {
-                    throw new Exception("Cart is empty!");
-                }
-
-                var newCartHeader = _mapper.Map<CartHeader>(cartDto.CartHeader);
-                var newCartDetails = _mapper.Map<IEnumerable<CartDetails>>(cartDto.CartDetails);
-
-                var CartHeader = await _db.cartHeaders.FirstOrDefaultAsync(u => u.UserId == cartDto.CartHeader.UserId);
-                if (CartHeader is null) 
+                var CartHeader = await _db.cartHeaders.FirstOrDefaultAsync(u => u.UserId == cartUpsertDto.UserId);
+                if (CartHeader is null)
                 {
                     // add new cart
+                    var newCartHeader = new CartHeader() { UserId = cartUpsertDto.UserId };
                     await _db.cartHeaders.AddAsync(newCartHeader);
                     await _db.SaveChangesAsync();
 
                     // add new details
-                    foreach (var cartDetail in newCartDetails)
+                    var newCartDetail = new CartDetails()
                     {
-                        cartDetail.CartHeaderId = newCartHeader.CartHeaderId;
-                        cartDetail.CartHeader = newCartHeader;
-                        await _db.CartDetails.AddAsync(cartDetail);
-                    }
+                        CartHeaderId = newCartHeader.CartHeaderId,
+                        CartHeader = newCartHeader,
+                        ProductId = cartUpsertDto.ProductId,
+                        Count = cartUpsertDto.Count
+                    };                    
+                    await _db.CartDetails.AddAsync(newCartDetail);                    
                     await _db.SaveChangesAsync();
                     return _response;
                 }
 
-                foreach (var item in newCartDetails)
+                var cartDetail = await _db.CartDetails
+                    .Where(u => u.CartHeaderId == CartHeader.CartHeaderId && u.ProductId == cartUpsertDto.ProductId)
+                    .FirstOrDefaultAsync();
+                if (cartDetail==null)
                 {
-                    item.CartHeader = CartHeader;
-                    item.CartHeaderId = CartHeader.CartHeaderId;
-                    _db.CartDetails.Update(item);
+                    cartDetail = new CartDetails
+                    {
+                        CartHeader = CartHeader,
+                        CartHeaderId = CartHeader.CartHeaderId,
+                        ProductId = cartUpsertDto.ProductId
+                    };
                 }
+                cartDetail.Count = cartUpsertDto.Count;
+                _db.CartDetails.Update(cartDetail);
+                
                 await _db.SaveChangesAsync();
             }
             catch (Exception e)
@@ -103,7 +107,7 @@ namespace Services.ShoppingCartAPI.Controllers
         }
 
         [HttpPut]
-        public async Task<ResponseDto> UpsertCouponCode([FromBody]string userId, string couponCode)
+        public async Task<ResponseDto> UpsertCouponCode([FromBody] string userId, string couponCode)
         {
             try
             {
@@ -126,7 +130,7 @@ namespace Services.ShoppingCartAPI.Controllers
 
         [HttpDelete]
         [Route("deleteall/")]
-        public async Task<ResponseDto> DeleteAllCart([FromBody]string userId)
+        public async Task<ResponseDto> DeleteAllCart([FromBody] string userId)
         {
             try
             {
