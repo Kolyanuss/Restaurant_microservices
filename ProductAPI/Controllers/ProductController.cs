@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ModelLibrary.Dto;
 using Services.ProductAPI.Data;
 using Services.ProductAPI.Models;
+using System.Threading.Tasks;
 
 namespace Services.ProductAPI.Controllers
 {
@@ -25,11 +26,11 @@ namespace Services.ProductAPI.Controllers
 		}
 
 		[HttpGet]
-		public ResponseDto Get()
+		public async Task<ResponseDto> Get()
 		{
 			try
 			{
-				var objList = _db.Products.ToList();
+				var objList = await _db.Products.ToListAsync();
 				_response.Result = _mapper.Map<IEnumerable<ProductDto>>(objList);
 			}
 			catch (Exception e)
@@ -42,11 +43,11 @@ namespace Services.ProductAPI.Controllers
 
 		[HttpGet]
 		[Route("{id:int}")]
-		public ResponseDto Get(int id)
+		public async Task<ResponseDto> Get(int id)
 		{
 			try
 			{
-				var obj = _db.Products.FirstOrDefault(u => u.ProductId == id);
+				var obj = await _db.Products.FirstAsync(u => u.ProductId == id);
 				_response.Result = _mapper.Map<ProductDto>(obj);
 			}
 			catch (Exception e)
@@ -59,13 +60,13 @@ namespace Services.ProductAPI.Controllers
 
 		[HttpPost]
 		[Authorize(Roles = "ADMIN")]
-		public ResponseDto Post([FromBody] ProductDto dto)
+		public async Task<ResponseDto> Post([FromBody] ProductDto dto)
 		{
 			try
 			{
 				Product model = _mapper.Map<Product>(dto);
 				_db.Products.Add(model);
-				_db.SaveChanges();
+				await _db.SaveChangesAsync();
 			}
 			catch (Exception e)
 			{
@@ -77,15 +78,15 @@ namespace Services.ProductAPI.Controllers
 
 		[HttpPut]
 		[Authorize(Roles = "ADMIN")]
-		public ResponseDto Put([FromBody] ProductDto dto)
+		public async Task<ResponseDto> Put([FromBody] ProductDto dto)
 		{
 			try
 			{
 				Product model = _mapper.Map<Product>(dto);
 				_db.Products.Update(model);
-				_db.SaveChanges();
+				await _db.SaveChangesAsync();
 
-				_response.Result = _mapper.Map<ProductDto>(_db.Products.First(u => u.ProductId == dto.ProductId));
+				//_response.Result = _mapper.Map<ProductDto>(_db.Products.First(u => u.ProductId == dto.ProductId));
 			}
 			catch (Exception e)
 			{
@@ -98,13 +99,13 @@ namespace Services.ProductAPI.Controllers
 		[HttpDelete]
 		[Route("{id:int}")]
 		[Authorize(Roles = "ADMIN")]
-		public ResponseDto Delete(int id)
+		public async Task<ResponseDto> Delete(int id)
 		{
 			try
 			{
-				Product obj = _db.Products.First(u => u.ProductId == id);
+				Product obj = await _db.Products.FirstAsync(u => u.ProductId == id);
 				_db.Products.Remove(obj);
-				_db.SaveChanges();
+				await _db.SaveChangesAsync();
 			}
 			catch (Exception e)
 			{
