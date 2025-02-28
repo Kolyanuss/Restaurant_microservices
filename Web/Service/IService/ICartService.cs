@@ -6,7 +6,7 @@ namespace Web.Service.IService
     {
         Task<ResponseDto?> GetCartAsync(string userId);
         Task<ResponseDto?> UpsetrCartAsync(CartUpsertDto cartDto);
-        Task<ResponseDto?> UpsetrCouponAsync(string userId, string couponCode);
+        Task<ResponseDto?> UpsetrCouponAsync(CartHeaderDto cartHeader);
         Task<ResponseDto?> DeleteCartAsync(string userId);
         Task<ResponseDto?> DeleteDetailAsync(int detailId);
     }

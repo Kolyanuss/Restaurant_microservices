@@ -30,7 +30,7 @@ namespace Web.Controllers
                     throw new Exception("Error: the user cannot be found");
                 }
                 var response = await _cartService.GetCartAsync(userId);
-                if (response==null || !response.IsSuccess)
+                if (response == null || !response.IsSuccess)
                 {
                     throw new Exception("Error: the shopping cart cannot be found");
                 }
@@ -76,6 +76,69 @@ namespace Web.Controllers
                 TempData["error"] = e.Message;
                 return RedirectToAction(nameof(HomeController.Index), nameof(HomeController).Replace("Controller", ""));
             }
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Remove(int cartDetailsId)
+        {
+            try
+            {
+                var userId = User.Claims.Where(u => u.Type == JwtRegisteredClaimNames.Sub)?.FirstOrDefault()?.Value;
+                if (string.IsNullOrEmpty(userId))
+                {
+                    throw new Exception("Error: the user cannot be found");
+                }
+
+                var response = await _cartService.DeleteDetailAsync(cartDetailsId);
+                if (response == null || !response.IsSuccess)
+                {
+                    throw new Exception("Server Error: The item has not been deleted from cart");
+                }
+                TempData["success"] = "The item has been successfully removed from the cart!";
+            }
+            catch (Exception e)
+            {
+                TempData["error"] = e.Message;
+            }
+            return RedirectToAction(nameof(CartIndex));
+        }
+
+        [Authorize]
+        public async Task<IActionResult> ApplyCoupon(CartHeaderDto cartHeader)
+        {
+            try
+            {
+                var userId = User.Claims.Where(u => u.Type == JwtRegisteredClaimNames.Sub)?.FirstOrDefault()?.Value;
+                if (string.IsNullOrEmpty(userId))
+                {
+                    throw new Exception("Error: the user cannot be found");
+                }
+                if (cartHeader==null)
+                {
+                    cartHeader = new CartHeaderDto();
+                }
+                cartHeader.UserId = userId;
+
+                var response = await _cartService.UpsetrCouponAsync(cartHeader);
+                if (response == null || !response.IsSuccess)
+                {
+                    throw new Exception("Error while appllying a coupon " + response?.Message);
+                }
+
+                if (string.IsNullOrEmpty(cartHeader.CouponCode))
+                {
+                    TempData["success"] = "The coupon has been removed!";
+                }
+                else
+                {
+                    TempData["success"] = "The coupon has been applied!";
+                }
+            }
+            catch (Exception e)
+            {
+                TempData["error"] = e.Message;
+            }
+            return RedirectToAction(nameof(CartIndex));
         }
     }
 }

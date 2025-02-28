@@ -34,13 +34,13 @@ namespace Web.Service
             });
         }
 
-        public async Task<ResponseDto?> UpsetrCouponAsync(string userId, string couponCode)
+        public async Task<ResponseDto?> UpsetrCouponAsync(CartHeaderDto cartHeader)
         {
             return await _baseService.SendAsync(new RequestDto()
             {
                 ApiType = StaticDetails.ApiType.PUT,
-                Url = StaticDetails.CartApiBase + "/api/cart/"+ couponCode,
-                Data = userId
+                Url = StaticDetails.CartApiBase + "/api/cart",
+                Data = cartHeader
             });
         }
 

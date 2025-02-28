@@ -107,15 +107,15 @@ namespace Services.ShoppingCartAPI.Controllers
         }
 
         [HttpPut]
-        public async Task<ResponseDto> UpsertCouponCode([FromBody] string userId, string couponCode)
+        public async Task<ResponseDto> UpsertCouponCode([FromBody] CartHeaderDto cartHeader)
         {
             try
             {
-                var CartHeader = await _db.cartHeaders.FirstOrDefaultAsync(u => u.UserId == userId);
+                var CartHeader = await _db.cartHeaders.FirstOrDefaultAsync(u => u.UserId == cartHeader.UserId);
                 if (CartHeader is null) { throw new Exception("No cart found for this user."); }
-                if (CartHeader.CouponCode != couponCode)
+                if (CartHeader.CouponCode != cartHeader.CouponCode)
                 {
-                    CartHeader.CouponCode = couponCode;
+                    CartHeader.CouponCode = cartHeader.CouponCode;
                     _db.cartHeaders.Update(CartHeader);
                     await _db.SaveChangesAsync();
                 }
@@ -147,7 +147,6 @@ namespace Services.ShoppingCartAPI.Controllers
         }
 
         [HttpDelete]
-        //[Route("{detailId:int}")]
         public async Task<ResponseDto> DeleteCartDetail([FromBody] int detailId)
         {
             try
