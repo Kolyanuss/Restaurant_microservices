@@ -59,22 +59,16 @@ namespace Web.Service
 
                 apiResponse = await client.SendAsync(message);
 
-                switch (apiResponse.StatusCode)
+                if (apiResponse.IsSuccessStatusCode)
                 {
-                    case HttpStatusCode.NotFound:
-                        return new ResponseDto { IsSuccess = false, Message = "Not Found" };
-                    case HttpStatusCode.Forbidden:
-                        return new ResponseDto { IsSuccess = false, Message = "Access Denied" };
-                    case HttpStatusCode.Unauthorized:
-                        return new ResponseDto { IsSuccess = false, Message = "Unauthorized" };
-                    case HttpStatusCode.InternalServerError:
-                        return new ResponseDto { IsSuccess = false, Message = "Internal Server Error" };
-                    default:
-                        var apiContent = await apiResponse.Content.ReadAsStringAsync();
-                        var apiResponseDto = JsonConvert.DeserializeObject<ResponseDto>(apiContent);
-                        return apiResponseDto;
+                    var apiContent = await apiResponse.Content.ReadAsStringAsync();
+                    var apiResponseDto = JsonConvert.DeserializeObject<ResponseDto>(apiContent);
+                    return apiResponseDto;
                 }
-
+                else
+                {
+                    return new ResponseDto { IsSuccess = false, Message = apiResponse.ReasonPhrase };
+                }
             }
             catch (Exception ex)
             {
