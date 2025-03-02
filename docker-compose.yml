@@ -84,25 +84,40 @@ services:
 
   web:
     image: ${DOCKER_REGISTRY-}web
-    depends_on:
-        - couponapi
-        - authapi
-        - productapi
-        - shoppingcartapi
     build:
       context: .
       dockerfile: Web/Dockerfile
+    depends_on:
+        - ocelotapigateway
     environment:
-      ServiceUrls__AuthApi: "http://authapi:8080"
-      ServiceUrls__CouponApi: "http://couponapi:8080"
-      ServiceUrls__ProductApi: "http://productapi:8080"
-      ServiceUrls__ShoppingCartApi: "http://shoppingcartapi:8080"
+      ServiceUrls__Gateway: "http://ocelotapigateway:8080"
     ports:
       - "6010:8080"
       - "7010:8081"
     networks:
       - backend
 
+  ocelotapigateway:
+    image: ${DOCKER_REGISTRY-}ocelotapigateway
+    build:
+      context: .
+      dockerfile: OcelotApiGateway/Dockerfile
+    depends_on:
+        - couponapi
+        - authapi
+        - productapi
+        - shoppingcartapi
+    environment:
+      - PRODUCT_SERVICE_HOST=productapi
+      - PRODUCT_SERVICE_PORT=8080
+      - COUPON_SERVICE_HOST=couponapi
+      - COUPON_SERVICE_PORT=8080
+      - AUTH_SERVICE_HOST=authapi
+      - AUTH_SERVICE_PORT=8080
+      - CART_SERVICE_HOST=shoppingcartapi
+      - CART_SERVICE_PORT=8080
+    networks:
+      - backend
 
 networks:
   backend:
@@ -110,4 +125,5 @@ networks:
 
 volumes:
   sql_data:
+
 

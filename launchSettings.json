@@ -12,7 +12,8 @@
         "web": "StartDebugging",
         "mssql": "StartWithoutDebugging",
         "productapi": "StartDebugging",
-        "shoppingcartapi": "StartDebugging"
+        "shoppingcartapi": "StartDebugging",
+        "ocelotapigateway": "StartDebugging"
       }
     }
   }
