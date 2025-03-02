@@ -20,7 +20,7 @@ namespace Web.Service
             {
                 ApiType = StaticDetails.ApiType.POST,
                 Data = registrationRequestDto,
-                Url = StaticDetails.AuthApiBase + "/api/auth/assignRole"
+                Url = StaticDetails.GatewayBase + "/auth/assignRole"
             }, withBearer: false);
         }
 
@@ -30,7 +30,7 @@ namespace Web.Service
             {
                 ApiType = StaticDetails.ApiType.POST,
                 Data = loginRequestDto,
-                Url = StaticDetails.AuthApiBase + "/api/auth/login"
+                Url = StaticDetails.GatewayBase + "/auth/login"
             }, withBearer: false);
         }
 
@@ -40,7 +40,7 @@ namespace Web.Service
             {
                 ApiType = StaticDetails.ApiType.POST,
                 Data = registrationRequestDto,
-                Url = StaticDetails.AuthApiBase + "/api/auth/register"
+                Url = StaticDetails.GatewayBase + "/auth/register"
             }, withBearer: false);
         }
     }

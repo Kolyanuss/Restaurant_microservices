@@ -18,7 +18,7 @@ namespace Web.Service
             return await _baseService.SendAsync(new RequestDto()
             {
                 ApiType = StaticDetails.ApiType.GET,
-                Url = StaticDetails.CouponApiBase + "/api/Coupon"
+                Url = StaticDetails.GatewayBase + "/Coupon"
             });
         }
 
@@ -27,7 +27,7 @@ namespace Web.Service
             return await _baseService.SendAsync(new RequestDto()
             {
                 ApiType = StaticDetails.ApiType.GET,
-                Url = StaticDetails.CouponApiBase + "/api/Coupon/GetByCode/" + couponCode
+                Url = StaticDetails.GatewayBase + "/Coupon/GetByCode/" + couponCode
             });
         }
 
@@ -36,7 +36,7 @@ namespace Web.Service
             return await _baseService.SendAsync(new RequestDto()
             {
                 ApiType = StaticDetails.ApiType.GET,
-                Url = StaticDetails.CouponApiBase + "/api/Coupon/" + id
+                Url = StaticDetails.GatewayBase + "/Coupon/" + id
             });
         }
 
@@ -45,7 +45,7 @@ namespace Web.Service
             return await _baseService.SendAsync(new RequestDto()
             {
                 ApiType = StaticDetails.ApiType.POST,
-                Url = StaticDetails.CouponApiBase + "/api/Coupon",
+                Url = StaticDetails.GatewayBase + "/Coupon",
                 Data = couponDto
             });
         }
@@ -55,7 +55,7 @@ namespace Web.Service
             return await _baseService.SendAsync(new RequestDto()
             {
                 ApiType = StaticDetails.ApiType.PUT,
-                Url = StaticDetails.CouponApiBase + "/api/Coupon",
+                Url = StaticDetails.GatewayBase + "/Coupon",
                 Data = couponDto
             });
         }
@@ -65,7 +65,7 @@ namespace Web.Service
             return await _baseService.SendAsync(new RequestDto()
             {
                 ApiType = StaticDetails.ApiType.DELETE,
-                Url = StaticDetails.CouponApiBase + "/api/Coupon/" + id
+                Url = StaticDetails.GatewayBase + "/Coupon/" + id
             });
         }
     }

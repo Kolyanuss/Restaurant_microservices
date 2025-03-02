@@ -19,7 +19,7 @@ namespace Web.Service
 			return await _baseService.SendAsync(new RequestDto()
 			{
 				ApiType = StaticDetails.ApiType.GET,
-				Url = StaticDetails.ProductApiBase + "/api/product"
+				Url = StaticDetails.GatewayBase + "/product"
 			});
 		}
 
@@ -28,7 +28,7 @@ namespace Web.Service
 			return await _baseService.SendAsync(new RequestDto()
 			{
 				ApiType = StaticDetails.ApiType.GET,
-				Url = StaticDetails.ProductApiBase + "/api/product/" + id
+				Url = StaticDetails.GatewayBase + "/product/" + id
 			});
 		}
 
@@ -37,7 +37,7 @@ namespace Web.Service
 			return await _baseService.SendAsync(new RequestDto()
 			{
 				ApiType = StaticDetails.ApiType.POST,
-				Url = StaticDetails.ProductApiBase + "/api/product",
+				Url = StaticDetails.GatewayBase + "/product",
 				Data = dto
 			});
 		}
@@ -47,7 +47,7 @@ namespace Web.Service
 			return await _baseService.SendAsync(new RequestDto()
 			{
 				ApiType = StaticDetails.ApiType.PUT,
-				Url = StaticDetails.ProductApiBase + "/api/product",
+				Url = StaticDetails.GatewayBase + "/product",
 				Data = dto
 			});
 		}
@@ -57,7 +57,7 @@ namespace Web.Service
 			return await _baseService.SendAsync(new RequestDto()
 			{
 				ApiType = StaticDetails.ApiType.DELETE,
-				Url = StaticDetails.ProductApiBase + "/api/product/" + id,
+				Url = StaticDetails.GatewayBase + "/product/" + id,
 			});
 		}
 	}
