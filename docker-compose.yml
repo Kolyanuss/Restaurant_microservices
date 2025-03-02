@@ -98,7 +98,8 @@ services:
       ServiceUrls__ProductApi: "http://productapi:8080"
       ServiceUrls__ShoppingCartApi: "http://shoppingcartapi:8080"
     ports:
-      - "7010:8080"
+      - "6010:8080"
+      - "7010:8081"
     networks:
       - backend
 
