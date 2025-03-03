@@ -6,6 +6,7 @@ using Services.AuthAPI.Data;
 using Services.AuthAPI.Models;
 using Services.AuthAPI.Service;
 using Services.AuthAPI.Service.IService;
+using JwtConfiguration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +18,12 @@ builder.Services.AddDbContext<AppDbContext>(option =>
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
-builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("ApiSettings:JwtOptions"));
+builder.Services.Configure<JwtOptions>(options =>
+{
+    options.Secret = JwtExtensions.secret;
+    options.Issuer = JwtExtensions.issuer;
+    options.Audience = JwtExtensions.audience;
+});
 
 // controllers
 builder.Services.AddControllers();
