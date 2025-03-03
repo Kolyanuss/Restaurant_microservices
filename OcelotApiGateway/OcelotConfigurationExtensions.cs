@@ -1,4 +1,5 @@
 ﻿using Ocelot.DependencyInjection;
+using Ocelot.Cache.CacheManager;
 using System.Text;
 
 namespace OcelotApiGateway
@@ -31,8 +32,11 @@ namespace OcelotApiGateway
                 .AddJsonStream(configStream)
                 .Build();
 
-            services.AddOcelot(newConfiguration);
-
+            services.AddOcelot(newConfiguration)
+                .AddCacheManager(x =>
+                {
+                    x.WithDictionaryHandle();
+                });
             return services;
         }
     }

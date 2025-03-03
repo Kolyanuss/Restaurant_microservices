@@ -7,7 +7,6 @@ var builder = WebApplication.CreateBuilder(args);
 //    .AddJsonFile("ocelot.json", optional: false, reloadOnChange: true)
 //    .AddEnvironmentVariables();
 //builder.Services.AddOcelot(builder.Configuration);
-//.AddConsul();
 
 builder.Services.AddCustomOcelot(builder.Configuration, "ocelot.json");
 
