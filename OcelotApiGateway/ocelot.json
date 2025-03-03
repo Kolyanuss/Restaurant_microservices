@@ -11,8 +11,8 @@
       "DownstreamPathTemplate": "/api/product/{everything}",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7000
+          "Host": "{PRODUCT_SERVICE_HOST}",
+          "Port": "{PRODUCT_SERVICE_PORT}"
         }
       ]
     },
@@ -23,8 +23,8 @@
       "DownstreamPathTemplate": "/api/coupon/{everything}",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7001
+          "Host": "{COUPON_SERVICE_HOST}",
+          "Port": "{COUPON_SERVICE_PORT}"
         }
       ]
     },
@@ -35,8 +35,8 @@
       "DownstreamPathTemplate": "/api/cart/{everything}",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7003
+          "Host": "{CART_SERVICE_HOST}",
+          "Port": "{CART_SERVICE_PORT}"
         }
       ]
     },
@@ -47,8 +47,8 @@
       "DownstreamPathTemplate": "/api/auth/{everything}",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7002
+          "Host": "{AUTH_SERVICE_HOST}",
+          "Port": "{AUTH_SERVICE_PORT}"
         }
       ]
     }

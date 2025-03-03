@@ -5,7 +5,15 @@
       "launchBrowser": true,
       "launchUrl": "product",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "PRODUCT_SERVICE_HOST": "localhost",
+        "PRODUCT_SERVICE_PORT": "7000",
+        "COUPON_SERVICE_HOST": "localhost",
+        "COUPON_SERVICE_PORT": "7001",
+        "AUTH_SERVICE_HOST": "localhost",
+        "AUTH_SERVICE_PORT": "7002",
+        "CART_SERVICE_HOST": "localhost",
+        "CART_SERVICE_PORT": "7003"
       },
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:7777"
