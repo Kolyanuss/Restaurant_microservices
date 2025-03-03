@@ -5,9 +5,27 @@
   },
 
   "Routes": [
+    //PRODUCT
     {
       "UpstreamPathTemplate": "/product/{everything}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/product/{everything}",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "{PRODUCT_SERVICE_HOST}",
+          "Port": "{PRODUCT_SERVICE_PORT}"
+        }
+      ],
+      "RateLimitOptions": {
+        "EnableRateLimiting": true,
+        "Period": "20s",
+        "Limit": 10,
+        "PeriodTimespan": 30
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/product/{everything}",
+      "UpstreamHttpMethod": [ "Post", "Put", "Delete" ],
       "DownstreamPathTemplate": "/api/product/{everything}",
       "DownstreamHostAndPorts": [
         {
@@ -16,7 +34,7 @@
         }
       ]
     },
-
+    // COUPON
     {
       "UpstreamPathTemplate": "/coupon/{everything}",
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
@@ -28,10 +46,27 @@
         }
       ]
     },
-
+    // CART
     {
       "UpstreamPathTemplate": "/cart/{everything}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/cart/{everything}",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "{CART_SERVICE_HOST}",
+          "Port": "{CART_SERVICE_PORT}"
+        }
+      ],
+      "RateLimitOptions": {
+        "EnableRateLimiting": true,
+        "Period": "10s",
+        "Limit": 3,
+        "PeriodTimespan": 6
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/cart/{everything}",
+      "UpstreamHttpMethod": [ "Post", "Put", "Delete" ],
       "DownstreamPathTemplate": "/api/cart/{everything}",
       "DownstreamHostAndPorts": [
         {
@@ -40,7 +75,7 @@
         }
       ]
     },
-
+    // AUTH
     {
       "UpstreamPathTemplate": "/auth/{everything}",
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
