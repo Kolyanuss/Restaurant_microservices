@@ -35,7 +35,8 @@
           "Host": "{PRODUCT_SERVICE_HOST}",
           "Port": "{PRODUCT_SERVICE_PORT}"
         }
-      ]
+      ],
+      "AuthenticationOptions": { "AuthenticationProviderKey": "Bearer" }
     },
     // COUPON
     {

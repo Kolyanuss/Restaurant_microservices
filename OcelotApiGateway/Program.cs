@@ -1,5 +1,6 @@
 using Ocelot.Middleware;
 using OcelotApiGateway;
+using JwtConfiguration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,11 +11,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCustomOcelot(builder.Configuration, "ocelot.json");
 
+builder.Services.AddJwtAuthentication();
+
 var app = builder.Build();
 
 //app.UseHttpsRedirection();
 
-//app.UseAuthorization();
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 
