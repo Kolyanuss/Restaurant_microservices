@@ -36,7 +36,9 @@
           "Port": "{PRODUCT_SERVICE_PORT}"
         }
       ],
-      "AuthenticationOptions": { "AuthenticationProviderKey": "Bearer" }
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
     },
     // COUPON
     {
@@ -49,7 +51,13 @@
           "Port": "{COUPON_SERVICE_PORT}"
         }
       ],
-      "FileCacheOptions": { "TtlSeconds": 120 }
+      "FileCacheOptions": { "TtlSeconds": 120 },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "RouteClaimsRequirement": {
+        "http://schemas.microsoft.com/ws/2008/06/identity/claims/role": "ADMIN"
+      }
     },
     {
       "UpstreamPathTemplate": "/coupon/{everything}",
@@ -60,7 +68,10 @@
           "Host": "{COUPON_SERVICE_HOST}",
           "Port": "{COUPON_SERVICE_PORT}"
         }
-      ]
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
     },
     // CART
     {
@@ -89,7 +100,10 @@
           "Host": "{CART_SERVICE_HOST}",
           "Port": "{CART_SERVICE_PORT}"
         }
-      ]
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
     },
     // AUTH
     {

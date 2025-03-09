@@ -12,6 +12,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCustomOcelot(builder.Configuration, "ocelot.json");
 
 builder.Services.AddJwtAuthentication();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminPolicy", policy =>
+        policy.RequireClaim("http://schemas.microsoft.com/ws/2008/06/identity/claims/role", "ADMIN"));
+});
+
 
 var app = builder.Build();
 
