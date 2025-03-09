@@ -19,7 +19,7 @@ namespace Web.Service
             return await _baseService.SendAsync(new RequestDto()
             {
                 ApiType = StaticDetails.ApiType.GET,
-                Url = StaticDetails.CartApiBase + "/api/cart",
+                Url = StaticDetails.GatewayBase + "/cart",
                 Data = userId
             });
         }
@@ -29,7 +29,7 @@ namespace Web.Service
             return await _baseService.SendAsync(new RequestDto()
             {
                 ApiType = StaticDetails.ApiType.POST,
-                Url = StaticDetails.CartApiBase + "/api/cart",
+                Url = StaticDetails.GatewayBase + "/cart",
                 Data = cartDto
             });
         }
@@ -39,7 +39,7 @@ namespace Web.Service
             return await _baseService.SendAsync(new RequestDto()
             {
                 ApiType = StaticDetails.ApiType.PUT,
-                Url = StaticDetails.CartApiBase + "/api/cart",
+                Url = StaticDetails.GatewayBase + "/cart",
                 Data = cartHeader
             });
         }
@@ -49,7 +49,7 @@ namespace Web.Service
             return await _baseService.SendAsync(new RequestDto()
             {
                 ApiType = StaticDetails.ApiType.DELETE,
-                Url = StaticDetails.CartApiBase + "/api/cart/deleteall",
+                Url = StaticDetails.GatewayBase + "/cart/deleteall",
                 Data = userId
             });
         }
@@ -59,7 +59,7 @@ namespace Web.Service
             return await _baseService.SendAsync(new RequestDto()
             {
                 ApiType = StaticDetails.ApiType.DELETE,
-                Url = StaticDetails.CartApiBase + "/api/cart",
+                Url = StaticDetails.GatewayBase + "/cart",
                 Data = detailId
             });
         }

@@ -59,16 +59,18 @@ namespace Web.Service
 
                 apiResponse = await client.SendAsync(message);
 
-                if (apiResponse.IsSuccessStatusCode)
+                ResponseDto apiResponseDto = new();
+                if (apiResponse.Content.Headers.ContentType != null)
                 {
                     var apiContent = await apiResponse.Content.ReadAsStringAsync();
-                    var apiResponseDto = JsonConvert.DeserializeObject<ResponseDto>(apiContent);
-                    return apiResponseDto;
+                    apiResponseDto = JsonConvert.DeserializeObject<ResponseDto>(apiContent);
                 }
-                else
+                if (!apiResponse.IsSuccessStatusCode)
                 {
-                    return new ResponseDto { IsSuccess = false, Message = apiResponse.ReasonPhrase };
+                    apiResponseDto.IsSuccess = false;
+                    apiResponseDto.Message = apiResponse.ReasonPhrase + " " + apiResponseDto.Message;
                 }
+                return apiResponseDto;
             }
             catch (Exception ex)
             {

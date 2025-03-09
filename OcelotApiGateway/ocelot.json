@@ -1,0 +1,121 @@
+{
+  "GlobalConfiguration": {
+    "BaseUrl": "https://localhost:7777",
+    "DownstreamScheme": "https"
+  },
+
+  "Routes": [
+    //PRODUCT
+    {
+      "UpstreamPathTemplate": "/product/{everything}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/product/{everything}",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "{PRODUCT_SERVICE_HOST}",
+          "Port": "{PRODUCT_SERVICE_PORT}"
+        }
+      ],
+      "RateLimitOptions": {
+        "EnableRateLimiting": true,
+        "Period": "20s",
+        "Limit": 10,
+        "PeriodTimespan": 10
+      },
+      "FileCacheOptions": {
+        "TtlSeconds": 60
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/product/{everything}",
+      "UpstreamHttpMethod": [ "Post", "Put", "Delete" ],
+      "DownstreamPathTemplate": "/api/product/{everything}",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "{PRODUCT_SERVICE_HOST}",
+          "Port": "{PRODUCT_SERVICE_PORT}"
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
+    },
+    // COUPON
+    {
+      "UpstreamPathTemplate": "/coupon/{everything}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/coupon/{everything}",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "{COUPON_SERVICE_HOST}",
+          "Port": "{COUPON_SERVICE_PORT}"
+        }
+      ],
+      "FileCacheOptions": { "TtlSeconds": 120 },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "RouteClaimsRequirement": {
+        "http://schemas.microsoft.com/ws/2008/06/identity/claims/role": "ADMIN"
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/coupon/{everything}",
+      "UpstreamHttpMethod": [ "Post", "Put", "Delete" ],
+      "DownstreamPathTemplate": "/api/coupon/{everything}",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "{COUPON_SERVICE_HOST}",
+          "Port": "{COUPON_SERVICE_PORT}"
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
+    },
+    // CART
+    {
+      "UpstreamPathTemplate": "/cart/{everything}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/cart/{everything}",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "{CART_SERVICE_HOST}",
+          "Port": "{CART_SERVICE_PORT}"
+        }
+      ],
+      "RateLimitOptions": {
+        "EnableRateLimiting": true,
+        "Period": "10s",
+        "Limit": 5,
+        "PeriodTimespan": 5
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/cart/{everything}",
+      "UpstreamHttpMethod": [ "Post", "Put", "Delete" ],
+      "DownstreamPathTemplate": "/api/cart/{everything}",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "{CART_SERVICE_HOST}",
+          "Port": "{CART_SERVICE_PORT}"
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
+    },
+    // AUTH
+    {
+      "UpstreamPathTemplate": "/auth/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+      "DownstreamPathTemplate": "/api/auth/{everything}",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "{AUTH_SERVICE_HOST}",
+          "Port": "{AUTH_SERVICE_PORT}"
+        }
+      ]
+    }
+  ]
+}

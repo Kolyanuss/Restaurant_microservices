@@ -32,7 +32,7 @@ namespace Web.Controllers
                 var response = await _cartService.GetCartAsync(userId);
                 if (response == null || !response.IsSuccess)
                 {
-                    throw new Exception("Error: the shopping cart cannot be found");
+                    throw new Exception(response?.Message ?? "Error: the shopping cart cannot be found");
                 }
                 CartDto cartDto = JsonConvert.DeserializeObject<CartDto>(Convert.ToString(response.Result));
 
@@ -92,7 +92,7 @@ namespace Web.Controllers
                 var response = await _cartService.DeleteDetailAsync(cartDetailsId);
                 if (response == null || !response.IsSuccess)
                 {
-                    throw new Exception("Server Error: The item has not been deleted from cart");
+                    throw new Exception(response?.Message ?? "Server Error: The item has not been deleted from cart");
                 }
                 TempData["success"] = "The item has been successfully removed from the cart!";
             }

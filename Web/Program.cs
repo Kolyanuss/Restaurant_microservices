@@ -16,10 +16,7 @@ builder.Services.AddHttpClient();
 });*/ // maybe equivalent
 
 // Static conf
-StaticDetails.CouponApiBase = builder.Configuration["ServiceUrls:CouponApi"];
-StaticDetails.AuthApiBase = builder.Configuration["ServiceUrls:AuthApi"];
-StaticDetails.ProductApiBase = builder.Configuration["ServiceUrls:ProductApi"];
-StaticDetails.CartApiBase = builder.Configuration["ServiceUrls:ShoppingCartApi"];
+StaticDetails.GatewayBase = builder.Configuration["ServiceUrls:Gateway"];
 
 // Services
 builder.Services.AddScoped<IBaseService, BaseService>();
